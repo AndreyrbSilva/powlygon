@@ -153,7 +153,7 @@ io.on("connection", (socket) => {
 
 server.listen(PORT, () => {
   console.log(`===============================================`);
-  console.log(`🚀 Mini Brawl 3D Server rodando na porta ${PORT}`);
+  console.log(`🚀 Powlygon 3D Server rodando na porta ${PORT}`);
   console.log(`🌐 Acesse: http://localhost:${PORT}`);
   console.log(`===============================================`);
 });
