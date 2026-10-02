@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MiniBrawlNetworkProtocol",
+  "description": "Contrato de mensagens via WebSocket para sincronização de salas e gameplay",
+  "clientToServerEvents": {
+    "CREATE_ROOM": {
+      "description": "Host solicita a criação de uma nova sala",
+      "payload": {
+        "playerName": { "type": "string" },
+        "selectedCharacterId": { "type": "string" },
+        "selectedWeaponId": { "type": "string" }
+      }
+    },
+    "JOIN_ROOM": {
+      "description": "Jogador solicita entrada em sala existente",
+      "payload": {
+        "roomCode": { "type": "string" },
+        "playerName": { "type": "string" },
+        "selectedCharacterId": { "type": "string" },
+        "selectedWeaponId": { "type": "string" }
+      }
+    },
+    "ADD_AI_BOT": {
+      "description": "Host adiciona um bot de IA para preencher uma vaga livre na sala",
+      "payload": {
+        "difficulty": { "type": "string", "enum": ["easy", "medium", "hard"] }
+      }
+    },
+    "START_MATCH": {
+      "description": "Host inicia a partida da sala",
+      "payload": {}
+    },
+    "PLAYER_INPUT": {
+      "description": "Envio contínuo de input do jogador (posição e rotação)",
+      "payload": {
+        "x": { "type": "number" },
+        "z": { "type": "number" },
+        "rotationY": { "type": "number" },
+        "isMoving": { "type": "boolean" },
+        "seq": { "type": "integer" }
+      }
+    },
+    "PLAYER_FIRE": {
+      "description": "Jogador dispara sua arma",
+      "payload": {
+        "weaponId": { "type": "string" },
+        "origin": { "x": "number", "y": "number", "z": "number" },
+        "angle": { "type": "number" },
+        "targetPosition": { "x": "number", "z": "number" }
+      }
+    }
+  },
+  "serverToClientEvents": {
+    "ROOM_STATE": {
+      "description": "Broadcast completo do estado do lobby",
+      "payload": {
+        "roomCode": { "type": "string" },
+        "hostId": { "type": "string" },
+        "status": { "type": "string", "enum": ["LOBBY", "STARTING", "IN_GAME", "GAME_OVER"] },
+        "players": { "type": "array" }
+      }
+    },
+    "GAME_TICK": {
+      "description": "Snapshot de sincronização periódica (20 a 30 Hz)",
+      "payload": {
+        "tick": { "type": "integer" },
+        "players": { "type": "array" },
+        "projectiles": { "type": "array" },
+        "obstacles": { "type": "array" }
+      }
+    },
+    "DAMAGE_EVENT": {
+      "description": "Notificação de dano sofrido por jogador ou obstáculo",
+      "payload": {
+        "targetId": { "type": "string" },
+        "dealerId": { "type": "string" },
+        "damage": { "type": "number" },
+        "remainingHp": { "type": "number" },
+        "isDead": { "type": "boolean" }
+      }
+    },
+    "MATCH_ENDED": {
+      "description": "Fim da partida com declaração do vencedor",
+      "payload": {
+        "winnerId": { "type": "string" },
+        "winnerName": { "type": "string" }
+      }
+    }
+  }
+}

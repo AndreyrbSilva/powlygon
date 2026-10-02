@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ArenaMapSpec",
+  "dimensions": { "width": 36, "depth": 36 },
+  "spawns": [
+    { "index": 0, "name": "Spawn Superior Esquerdo", "x": -13.5, "z": -13.5 },
+    { "index": 1, "name": "Spawn Superior Direito", "x": 13.5, "z": -13.5 },
+    { "index": 2, "name": "Spawn Inferior Esquerdo", "x": -13.5, "z": 13.5 },
+    { "index": 3, "name": "Spawn Inferior Direito", "x": 13.5, "z": 13.5 }
+  ],
+  "solidWalls": [
+    { "id": "wall_center_left", "x": -6.5, "z": 0.0, "width": 2.0, "depth": 7.0, "height": 2.2 },
+    { "id": "wall_center_right", "x": 6.5, "z": 0.0, "width": 2.0, "depth": 7.0, "height": 2.2 },
+    { "id": "wall_center_top", "x": 0.0, "z": -6.5, "width": 7.0, "depth": 2.0, "height": 2.2 },
+    { "id": "wall_center_bottom", "x": 0.0, "z": 6.5, "width": 7.0, "depth": 2.0, "height": 2.2 },
+    { "id": "pillar_top_left", "x": -8.0, "z": -8.0, "width": 2.5, "depth": 2.5, "height": 2.2 },
+    { "id": "pillar_top_right", "x": 8.0, "z": -8.0, "width": 2.5, "depth": 2.5, "height": 2.2 },
+    { "id": "pillar_bot_left", "x": -8.0, "z": 8.0, "width": 2.5, "depth": 2.5, "height": 2.2 },
+    { "id": "pillar_bot_right", "x": 8.0, "z": 8.0, "width": 2.5, "depth": 2.5, "height": 2.2 }
+  ],
+  "destructibleCrates": [
+    { "id": "crate_c1", "x": 0.0, "z": 0.0, "hp": 300, "respawnCooldownSec": 30, "guaranteedDrop": "super" },
+    { "id": "crate_c2", "x": -3.0, "z": -3.0, "hp": 240, "respawnCooldownSec": 25, "dropRates": { "health": 0.6, "super": 0.4 } },
+    { "id": "crate_c3", "x": 3.0, "z": -3.0, "hp": 240, "respawnCooldownSec": 25, "dropRates": { "health": 0.6, "super": 0.4 } },
+    { "id": "crate_c4", "x": -3.0, "z": 3.0, "hp": 240, "respawnCooldownSec": 25, "dropRates": { "health": 0.6, "super": 0.4 } },
+    { "id": "crate_c5", "x": 3.0, "z": 3.0, "hp": 240, "respawnCooldownSec": 25, "dropRates": { "health": 0.6, "super": 0.4 } },
+    { "id": "crate_w1", "x": -11.0, "z": 0.0, "hp": 240, "respawnCooldownSec": 25, "dropRates": { "health": 0.7, "super": 0.3 } },
+    { "id": "crate_e1", "x": 11.0, "z": 0.0, "hp": 240, "respawnCooldownSec": 25, "dropRates": { "health": 0.7, "super": 0.3 } }
+  ]
+}

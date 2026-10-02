@@ -1,0 +1,26 @@
+{
+  "name": "powlygon",
+  "version": "1.0.0",
+  "description": "Powlygon - Arena 3D Multiplayer com visão isométrica desenvolvida com Spec-Driven Development",
+  "main": "server/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node --watch server/server.js",
+    "test": "node tests/spec-compliance.test.js"
+  },
+  "keywords": [
+    "threejs",
+    "socketio",
+    "game-development",
+    "multiplayer",
+    "spec-driven-development",
+    "powlygon"
+  ],
+  "author": "Andrey Silva <andreyrdh@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.2",
+    "socket.io": "^4.8.1"
+  }
+}

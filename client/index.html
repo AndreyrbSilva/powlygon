@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Powlygon — Arena Multiplayer 3D</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+
+  <!-- Três.js 3D WebGL Canvas Container -->
+  <div id="canvas-container"></div>
+
+  <!-- Camada de Interface (UI Overlay) -->
+  <div class="ui-layer">
+
+    <!-- ================= 1. TELA DE ENTRADA / BEM-VINDO ================= -->
+    <div id="screen-welcome" class="screen interactive active">
+      <div class="welcome-box">
+        <h1 class="game-logo">POWLYGON</h1>
+        <p class="game-subtitle">Arena multiplayer isométrica 3D desenvolvida com Spec-Driven Development</p>
+
+        <div class="input-group">
+          <label for="player-name-input">Seu Apelido</label>
+          <input type="text" id="player-name-input" class="input-field" placeholder="Ex: Guerreiro" maxlength="14" value="Brawler">
+        </div>
+
+        <button id="btn-create-room" class="btn-main">Criar Nova Sala</button>
+
+        <div class="divider"><span>OU ENTRE COM CÓDIGO</span></div>
+
+        <div class="input-group">
+          <input type="text" id="room-code-input" class="input-field" placeholder="CÓDIGO (ex: 7K9P)" maxlength="4" style="text-transform: uppercase; text-align: center; letter-spacing: 4px;">
+        </div>
+
+        <button id="btn-join-room" class="btn-secondary">Entrar na Sala</button>
+      </div>
+    </div>
+
+    <!-- ================= 2. TELA DE LOBBY 3D ================= -->
+    <div id="screen-lobby" class="screen interactive">
+      <div class="lobby-header">
+        <div class="room-badge">
+          <span>SALA:</span>
+          <span id="lobby-room-code" class="room-code-display">----</span>
+          <button id="btn-copy-code" class="btn-copy">Copiar Código</button>
+        </div>
+        <div id="host-controls">
+          <button id="btn-start-game" class="btn-main" style="padding: 12px 30px; font-size: 1.1rem;">Iniciar Partida</button>
+        </div>
+      </div>
+
+      <div class="lobby-content">
+        <!-- Coluna 1: Preview 3D do Personagem -->
+        <div class="panel">
+          <div class="panel-title">👤 Escolha seu Brawler</div>
+          <div class="carousel-box">
+            <canvas id="carousel-canvas"></canvas>
+          </div>
+          <div class="carousel-nav">
+            <button id="btn-char-prev" class="carousel-btn">◀</button>
+            <div class="character-info">
+              <div id="char-name-display" class="character-name">Soldado Tático</div>
+              <div id="char-counter-display" class="character-counter">1 de 10</div>
+            </div>
+            <button id="btn-char-next" class="carousel-btn">▶</button>
+          </div>
+        </div>
+
+        <!-- Coluna 2: Seletor de Armas -->
+        <div class="panel">
+          <div class="panel-title">🎯 Escolha seu Arsenal</div>
+          <div class="weapons-grid">
+            <div class="weapon-card selected" data-weapon="pistol">
+              <div class="weapon-name">🔫 Pistola Tática</div>
+              <div class="weapon-desc">Tiro reto e ágil de média distância. Cadência veloz.</div>
+              <div class="super-badge">SUPER: Tempestade 360º</div>
+            </div>
+            <div class="weapon-card" data-weapon="shotgun">
+              <div class="weapon-name">💥 Shotgun / Trabuco</div>
+              <div class="weapon-desc">Dispara 5 projéteis em leque. Letal à queima-roupa.</div>
+              <div class="super-badge">SUPER: Investida Brutal</div>
+            </div>
+            <div class="weapon-card" data-weapon="grenade_launcher">
+              <div class="weapon-name">💣 Lança-Granadas</div>
+              <div class="weapon-desc">Arco parabólico que pula caixas. Dano em área.</div>
+              <div class="super-badge">SUPER: Mega Bomba Nuclear</div>
+            </div>
+            <div class="weapon-card" data-weapon="sniper">
+              <div class="weapon-name">⚡ Rifle Sniper Laser</div>
+              <div class="weapon-desc">Longo alcance e alta velocidade. Grande dano.</div>
+              <div class="super-badge">SUPER: Raio que Atravessa Paredes</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coluna 3: Participantes da Sala -->
+        <div class="panel">
+          <div class="panel-title">🎮 Jogadores na Sala (<span id="slots-count">1</span>/4)</div>
+          <div id="slots-container" class="slots-list">
+            <!-- Preenchido via JavaScript -->
+          </div>
+
+          <div id="bot-panel" class="bot-controls" style="display: none;">
+            <select id="bot-diff-select" class="bot-difficulty-select">
+              <option value="easy">Bot Fácil</option>
+              <option value="medium" selected>Bot Médio</option>
+              <option value="hard">Bot Difícil</option>
+            </select>
+            <button id="btn-add-bot" class="btn-secondary" style="flex: 1; padding: 10px;">+ Adicionar Bot</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 3. HUD DE GAMEPLAY ================= -->
+    <div id="hud-overlay" class="ui-layer" style="display: none;">
+      <!-- Topo: Timer e Placar de Abates -->
+      <div class="top-hud">
+        <div class="leaderboard-box">
+          <div class="lb-title">🏆 Placar de Abates</div>
+          <div id="leaderboard-rows"></div>
+        </div>
+
+        <div id="match-timer" class="match-timer-box">03:00</div>
+      </div>
+
+      <!-- Rodapé: Vida, Dash e Super -->
+      <div class="bottom-hud">
+        <div class="status-bars">
+          <div class="bar-container">
+            <div id="hp-bar-fill" class="hp-fill"></div>
+            <div id="hp-text" class="bar-label">1000 / 1000 HP</div>
+          </div>
+        </div>
+
+        <div class="actions-cluster interactive">
+          <!-- Dash no Espaço -->
+          <div id="dash-btn" class="action-btn-circle dash">
+            <span class="action-icon">💨</span>
+            <span class="action-key">ESPAÇO</span>
+            <div id="dash-cooldown-overlay" class="cooldown-overlay" style="display: none;">3</div>
+          </div>
+
+          <!-- Super no E ou Botão Direito -->
+          <div id="super-btn" class="action-btn-circle super">
+            <span class="action-icon">⚡</span>
+            <span class="action-key">E / M2</span>
+            <div id="super-charge-overlay" class="cooldown-overlay">0%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notificação de Contagem Inicial -->
+      <div id="countdown-banner" style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); font-size: 6rem; font-weight: 900; color: #ffcc00; text-shadow: 0 0 30px rgba(255,204,0,0.8); display: none;">
+        3
+      </div>
+    </div>
+
+    <!-- ================= 4. MODAL DE RESPAWN ================= -->
+    <div id="respawn-modal">
+      <h2 style="color: #ff4757; font-size: 1.8rem; margin-bottom: 6px;">VOCÊ FOI ABATIDO!</h2>
+      <p id="killer-info" style="color: #9aa5ce; font-size: 1rem;">Renasce em instantes...</p>
+      <div id="respawn-countdown" class="respawn-timer-count">3</div>
+      <p style="font-size: 0.85rem; color: #ffcc00; margin-bottom: 12px; font-weight: 700;">TROQUE DE ARMA PARA O RESPAWN:</p>
+      <div style="display: flex; gap: 8px; justify-content: center;">
+        <button class="btn-secondary respawn-weapon-btn" data-weapon="pistol" style="padding: 8px 12px;">🔫 Pistola</button>
+        <button class="btn-secondary respawn-weapon-btn" data-weapon="shotgun" style="padding: 8px 12px;">💥 Shotgun</button>
+        <button class="btn-secondary respawn-weapon-btn" data-weapon="grenade_launcher" style="padding: 8px 12px;">💣 Granada</button>
+        <button class="btn-secondary respawn-weapon-btn" data-weapon="sniper" style="padding: 8px 12px;">⚡ Sniper</button>
+      </div>
+    </div>
+
+    <!-- ================= 5. TELA DE PÓDIO 3D FINAL ================= -->
+    <div id="screen-podium">
+      <div class="podium-stats-box">
+        <h1 style="color: #ffcc00; font-size: 2.2rem; font-weight: 900; margin-bottom: 4px;">PARTIDA ENCERRADA!</h1>
+        <p id="winner-announcement" style="color: #fff; font-size: 1.2rem; margin-bottom: 16px;">Vencedor: Campeão</p>
+
+        <table class="stats-table">
+          <thead>
+            <tr>
+              <th>Posição</th>
+              <th>Brawler</th>
+              <th>Abates</th>
+              <th>Mortes</th>
+              <th>Dano Total</th>
+            </tr>
+          </thead>
+          <tbody id="podium-table-body">
+            <!-- Preenchido via JS -->
+          </tbody>
+        </table>
+
+        <div id="podium-controls" style="margin-top: 20px;">
+          <button id="btn-play-again" class="btn-main" style="width: auto; padding: 14px 40px;">Jogar Novamente</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Script Principal do Jogo -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,722 @@
+/* client/css/style.css */
+:root {
+  --primary: #ffcc00;
+  --primary-hover: #ffd633;
+  --secondary: #ff3366;
+  --accent: #00e5ff;
+  --bg-dark: #0f111a;
+  --bg-panel: rgba(22, 27, 46, 0.92);
+  --bg-card: rgba(35, 42, 71, 0.85);
+  --border-color: rgba(255, 255, 255, 0.12);
+  --text: #ffffff;
+  --text-muted: #9aa5ce;
+  --danger: #ff4757;
+  --success: #2ed573;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  user-select: none;
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-dark);
+  color: var(--text);
+}
+
+#canvas-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Telas e Modais de Interface */
+.ui-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.interactive {
+  pointer-events: auto;
+}
+
+.screen {
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+
+.screen.active {
+  display: flex;
+}
+
+/* ================= Tela Inicial / Boas-Vindas ================= */
+#screen-welcome {
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at center, #1b2342 0%, #090b12 100%);
+}
+
+.welcome-box {
+  background: var(--bg-panel);
+  border: 2px solid var(--border-color);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 204, 0, 0.15);
+  border-radius: 20px;
+  padding: 40px;
+  width: 440px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+
+.game-logo {
+  font-size: 2.8rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: var(--primary);
+  text-shadow: 0 4px 15px rgba(255, 204, 0, 0.4);
+  margin-bottom: 8px;
+}
+
+.game-subtitle {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 28px;
+}
+
+.input-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.input-field {
+  width: 100%;
+  padding: 14px 18px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-field:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 12px rgba(255, 204, 0, 0.3);
+}
+
+.btn-main {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #ffcc00 0%, #ff9900 100%);
+  color: #12141f;
+  font-size: 1.15rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(255, 153, 0, 0.35);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.btn-main:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(255, 153, 0, 0.5);
+}
+
+.btn-main:active {
+  transform: translateY(1px);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 22px 0;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.divider::before, .divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border-color);
+}
+
+.divider span {
+  padding: 0 12px;
+}
+
+.btn-secondary {
+  width: 100%;
+  padding: 14px;
+  background: var(--bg-card);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--accent);
+}
+
+/* ================= Tela de Lobby 3D ================= */
+#screen-lobby {
+  flex-direction: column;
+  padding: 24px 40px;
+  background: rgba(10, 12, 20, 0.88);
+  backdrop-filter: blur(8px);
+}
+
+.lobby-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.room-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-color);
+  padding: 10px 20px;
+  border-radius: 12px;
+}
+
+.room-code-display {
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: var(--accent);
+}
+
+.btn-copy {
+  padding: 6px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.btn-copy:hover {
+  background: var(--primary);
+  color: #000;
+}
+
+.lobby-content {
+  display: grid;
+  grid-template-columns: 360px 1fr 340px;
+  gap: 24px;
+  flex: 1;
+  min-height: 0;
+}
+
+.panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Carrossel 3D de Personagem */
+.carousel-box {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: radial-gradient(circle at center, #242d52 0%, #121629 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+#carousel-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.carousel-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+}
+
+.carousel-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: #fff;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.15s;
+}
+
+.carousel-btn:hover {
+  background: var(--primary);
+  color: #000;
+}
+
+.character-info {
+  text-align: center;
+}
+
+.character-name {
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.character-counter {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* Seletor de Armas */
+.weapons-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.weapon-card {
+  background: var(--bg-card);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.weapon-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 204, 0, 0.4);
+}
+
+.weapon-card.selected {
+  border-color: var(--primary);
+  background: rgba(255, 204, 0, 0.12);
+  box-shadow: 0 0 15px rgba(255, 204, 0, 0.2);
+}
+
+.weapon-name {
+  font-weight: 800;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.weapon-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.3;
+}
+
+.super-badge {
+  font-size: 0.7rem;
+  color: #ff9900;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+/* Lista de Slots / Jogadores */
+.slots-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.slot-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+}
+
+.slot-item.empty {
+  border-style: dashed;
+  color: var(--text-muted);
+  justify-content: center;
+  padding: 16px;
+}
+
+.slot-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.slot-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #333d6b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.slot-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.slot-role {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.bot-controls {
+  margin-top: 14px;
+  display: flex;
+  gap: 8px;
+}
+
+.bot-difficulty-select {
+  padding: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: #fff;
+  outline: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* ================= HUD de Gameplay ================= */
+#hud-overlay {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px 30px;
+  pointer-events: none;
+}
+
+.top-hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.match-timer-box {
+  background: var(--bg-panel);
+  border: 2px solid var(--primary);
+  border-radius: 12px;
+  padding: 8px 22px;
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.leaderboard-box {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 12px 18px;
+  min-width: 220px;
+}
+
+.lb-title {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--primary);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.lb-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.lb-row.me {
+  color: var(--primary);
+}
+
+/* Bottom HUD (Vida, Dash, Super) */
+.bottom-hud {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 30px;
+}
+
+.status-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 320px;
+}
+
+.bar-container {
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid var(--border-color);
+  border-radius: 20px;
+  height: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hp-fill {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, #2ed573 0%, #7bed9f 100%);
+  transition: width 0.15s ease-out;
+}
+
+.bar-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-shadow: 0 1px 4px #000;
+}
+
+/* Botões de Ação (Dash & Super) */
+.actions-cluster {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.action-btn-circle {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--bg-panel);
+  border: 3px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+.action-btn-circle.dash {
+  border-color: var(--accent);
+}
+
+.action-btn-circle.super {
+  border-color: #ff9900;
+}
+
+.action-btn-circle.super.ready {
+  border-color: #ffcc00;
+  box-shadow: 0 0 25px #ffcc00, inset 0 0 15px rgba(255, 204, 0, 0.6);
+  animation: pulse-glow 1s infinite alternate;
+}
+
+@keyframes pulse-glow {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.08); }
+}
+
+.action-key {
+  position: absolute;
+  bottom: -6px;
+  background: #111;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 0.65rem;
+  font-weight: 800;
+}
+
+.action-icon {
+  font-size: 1.5rem;
+}
+
+.cooldown-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+/* ================= Modal de Respawn ================= */
+#respawn-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--bg-panel);
+  border: 2px solid var(--danger);
+  border-radius: 20px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+  pointer-events: auto;
+  display: none;
+}
+
+.respawn-timer-count {
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: var(--danger);
+  margin: 10px 0;
+}
+
+/* ================= Tela de Pódio 3D ================= */
+#screen-podium {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(8, 10, 18, 0.85);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 40px;
+  pointer-events: auto;
+  z-index: 20;
+}
+
+.podium-stats-box {
+  background: var(--bg-panel);
+  border: 2px solid var(--primary);
+  border-radius: 16px;
+  padding: 24px;
+  width: 560px;
+  text-align: center;
+  margin-bottom: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+}
+
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 14px;
+}
+
+.stats-table th, .stats-table td {
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.stats-table th {
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.stats-table td.winner-row {
+  color: var(--primary);
+  font-weight: 800;
+}
+
+/* ================= Números de Dano Flutuantes ================= */
+.damage-popup {
+  position: absolute;
+  font-weight: 900;
+  font-size: 1.3rem;
+  color: #ffcc00;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9), 0 0 10px rgba(255, 71, 87, 0.6);
+  pointer-events: none;
+  animation: float-damage 0.8s ease-out forwards;
+  z-index: 100;
+}
+
+.damage-popup.crit {
+  font-size: 1.8rem;
+  color: #ff3366;
+  text-shadow: 0 0 15px #ff3366, 0 2px 10px #000;
+}
+
+@keyframes float-damage {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.6);
+  }
+  20% {
+    transform: translate(-50%, -80%) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -150%) scale(0.9);
+  }
+}
+

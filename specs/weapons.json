@@ -1,0 +1,96 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "WeaponBalanceSpec",
+  "description": "Especificação formal de armas e habilidades supremas do Mini Brawl 3D",
+  "weapons": [
+    {
+      "id": "pistol",
+      "name": "Pistola Tática",
+      "type": "straight_projectile",
+      "damage": 120,
+      "projectilesPerShot": 1,
+      "projectileSpeed": 28.0,
+      "range": 22.0,
+      "fireRateCooldownMs": 350,
+      "spreadAngleDeg": 2.0,
+      "canArcOverWalls": false,
+      "splashRadius": 0.0,
+      "color": "#ffcc00",
+      "super": {
+        "id": "bullet_storm",
+        "name": "Tempestade Radial (Bullet Storm)",
+        "description": "Rajada circular de 24 projéteis em 360 graus cobrindo toda a área ao redor",
+        "damagePerBullet": 100,
+        "bulletCount": 24,
+        "cooldownMs": 1000
+      }
+    },
+    {
+      "id": "shotgun",
+      "name": "Trabuco / Shotgun",
+      "type": "spread_projectile",
+      "damage": 80,
+      "projectilesPerShot": 5,
+      "projectileSpeed": 22.0,
+      "range": 12.0,
+      "fireRateCooldownMs": 750,
+      "spreadAngleDeg": 28.0,
+      "canArcOverWalls": false,
+      "splashRadius": 0.0,
+      "color": "#ff5500",
+      "super": {
+        "id": "bull_rush",
+        "name": "Investida Brutal (Bull Rush)",
+        "description": "Avanço de 8 metros que destrói caixas no caminho e causa 450 de dano com forte empurrão",
+        "damage": 450,
+        "distance": 8.0,
+        "breaksCrates": true
+      }
+    },
+    {
+      "id": "grenade_launcher",
+      "name": "Lança-Granadas",
+      "type": "parabolic_projectile",
+      "damage": 260,
+      "projectilesPerShot": 1,
+      "projectileSpeed": 14.0,
+      "range": 16.0,
+      "fireRateCooldownMs": 1100,
+      "spreadAngleDeg": 0.0,
+      "canArcOverWalls": true,
+      "splashRadius": 3.5,
+      "color": "#00ff66",
+      "super": {
+        "id": "nuke_bomb",
+        "name": "Mega Bomba Nuclear",
+        "description": "Lança míssil com raio de impacto de 7 metros (600 dano) deixando poça de fogo por 3s",
+        "damage": 600,
+        "splashRadius": 7.0,
+        "firePoolDurationMs": 3000,
+        "firePoolDamagePerSec": 50
+      }
+    },
+    {
+      "id": "sniper",
+      "name": "Rifle Laser Sniper",
+      "type": "straight_projectile",
+      "damage": 420,
+      "projectilesPerShot": 1,
+      "projectileSpeed": 45.0,
+      "range": 32.0,
+      "fireRateCooldownMs": 1300,
+      "spreadAngleDeg": 0.0,
+      "canArcOverWalls": false,
+      "splashRadius": 0.0,
+      "color": "#00ccff",
+      "super": {
+        "id": "orbital_beam",
+        "name": "Raio Perfurante de Éter",
+        "description": "Feixe contínuo penetrante que atravessa todas as paredes e caixas causando 700 de dano",
+        "damage": 700,
+        "piercesAllWalls": true,
+        "beamWidth": 1.2
+      }
+    }
+  ]
+}
